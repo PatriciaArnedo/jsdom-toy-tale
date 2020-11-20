@@ -14,15 +14,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 }); 
 
+//--------------Start of Code----------------//
+
 
 //target the div element to append to
 //make a get request
 //use response data to make a div
 //append div to parent div
 
-
+//variables
 const toysDiv = document.querySelector("#toy-collection")
+const toyForm = document.querySelector(".add-toy-form")
+const toyCollection = document.querySelector("#toy-collection")
 
+
+//Get Network Request
 fetch("http://localhost:3000/toys")
 .then(response=>response.json())
 .then(toys=>{
@@ -30,31 +36,16 @@ fetch("http://localhost:3000/toys")
   toys.forEach( toy => {renderToy(toy)} )
 })
 
-
-function renderToy(toy){
-  const toyDiv = document.createElement("div")
-  toyDiv.innerHTML = `
-  <div class="card" data-id="${toy.id}">
-    <h2>${toy.name}</h2>
-    <img src=${toy.image} class="toy-avatar" />
-    <p>${toy.likes} Likes </p>
-    <button class="like-btn">Like <3</button>
-  </div>
-  `
-  toysDiv.append(toyDiv)
-}
-
 // get the form element, listen for a submit event on it, 
 // capture the data inside, send a post request using fetch
 // render the toy!!
 
-const toyForm = document.querySelector(".add-toy-form")
-
+//Form Event listener and POST request
 toyForm.addEventListener("submit", function(event){
   event.preventDefault()
-  const newToy ={
+  const newToy = {
     name: event.target.name.value,
-    image: event.targcet.image.value,
+    image: event.target.image.value,
     likes: 0
   }
 
@@ -72,13 +63,12 @@ fetch("http://localhost:3000/toys", {
 
 })
 
-const toyCollection = document.querySelector("#toy-collection")
-
 // target like button
 //add event listener for click
 //make patch request with updated like + 1
 //increase like by one on DOM
 
+//Like event listener and PATCH request
 toyCollection.addEventListener("click", function(event) {
   // debugger
   console.log(event.target)
@@ -106,3 +96,17 @@ toyCollection.addEventListener("click", function(event) {
   })
 }
 })
+
+//Toy Renderer
+function renderToy(toy){
+  const toyDiv = document.createElement("div")
+  toyDiv.innerHTML = `
+  <div class="card" data-id="${toy.id}">
+    <h2>${toy.name}</h2>
+    <img src=${toy.image} class="toy-avatar" />
+    <p>${toy.likes} Likes </p>
+    <button class="like-btn">Like <3</button>
+  </div>
+  `
+  toysDiv.append(toyDiv)
+}
